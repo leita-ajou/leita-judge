@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"time"
 
+	. "leita/src/utils"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2/log"
-	. "leita/src/utils"
 )
 
 func getDSN() (string, error) {
@@ -25,7 +26,7 @@ func getDSN() (string, error) {
 		Name:     GetEnv("DB_NAME"),
 	}
 
-	if !AllString(dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Name) {
+	if !All(dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Name) {
 		err := fmt.Errorf("invalid database configuration")
 		log.Error(err)
 		return "", err

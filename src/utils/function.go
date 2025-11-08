@@ -1,17 +1,9 @@
 package utils
 
-func All(s []bool) bool {
+func All[T comparable](s ...T) bool {
+	var zero T
 	for _, v := range s {
-		if !v {
-			return false
-		}
-	}
-	return true
-}
-
-func AllString(s ...string) bool {
-	for _, v := range s {
-		if v == "" {
+		if v == zero {
 			return false
 		}
 	}
