@@ -1,9 +1,10 @@
 package routes
 
 import (
+	"leita/src/handlers"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
-	"leita/src/handlers"
 )
 
 func RegisterProblemRoutes(api fiber.Router) error {
