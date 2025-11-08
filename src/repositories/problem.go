@@ -1,10 +1,11 @@
 package repositories
 
 import (
-	"github.com/gofiber/fiber/v2/log"
 	"leita/src/dataSources"
 	. "leita/src/entities"
 	. "leita/src/utils"
+
+	"github.com/gofiber/fiber/v2/log"
 )
 
 type ProblemRepository struct {

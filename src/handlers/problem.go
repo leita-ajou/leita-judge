@@ -4,12 +4,13 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
 	. "leita/src/commands"
 	. "leita/src/entities"
 	"leita/src/services"
 	. "leita/src/utils"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 type ProblemHandler struct {

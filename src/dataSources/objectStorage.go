@@ -5,10 +5,11 @@ import (
 	"context"
 	"io"
 
+	. "leita/src/utils"
+
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/objectstorage"
-	. "leita/src/utils"
 )
 
 type ObjectStorage struct {
