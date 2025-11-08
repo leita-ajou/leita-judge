@@ -3,6 +3,9 @@ package main
 import (
 	"os"
 
+	. "leita/src/routes"
+	. "leita/src/utils"
+
 	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
@@ -10,8 +13,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	. "leita/src/routes"
-	. "leita/src/utils"
 )
 
 // @title		Leita API Docs
