@@ -432,7 +432,7 @@ func executeProgram(runCmd []string, inputContents []byte, timeLimit, memoryLimi
 	}
 
 	output := outputBuffer.Bytes()
-	output = TrimAllTrailingWhitespace(output)
+	output = bytes.TrimRight(output, "\n\r\t ")
 
 	return JudgeCorrect, output, usedTime, 0, nil
 }

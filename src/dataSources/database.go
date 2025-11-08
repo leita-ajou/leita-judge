@@ -3,6 +3,7 @@ package dataSources
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	"time"
 
 	. "leita/src/utils"
@@ -19,11 +20,11 @@ func getDSN() (string, error) {
 		Port     string
 		Name     string
 	}{
-		User:     GetEnv("DB_USER"),
-		Password: GetEnv("DB_PASSWORD"),
-		Host:     GetEnv("DB_HOST"),
-		Port:     GetEnv("DB_PORT"),
-		Name:     GetEnv("DB_NAME"),
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		Name:     os.Getenv("DB_NAME"),
 	}
 
 	if !All(dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Name) {
