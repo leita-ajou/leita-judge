@@ -11,10 +11,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gofiber/fiber/v2/log"
 	. "leita/src/entities"
 	"leita/src/repositories"
 	. "leita/src/utils"
+
+	"github.com/gofiber/fiber/v2/log"
 )
 
 type ProblemService struct {
@@ -333,7 +334,7 @@ func judgeSubmit(runCmd []string, submitId int, timeLimit, memoryLimit int) (Jud
 	usedTime := Sum(usedTimes[1:]) / (int64(testCaseNum) - 1)
 	usedMemory := Sum(usedMemories) / int64(testCaseNum)
 
-	if !All(judgeResults) {
+	if !All(judgeResults...) {
 		printJudgeSubmitResult(false, usedTime, usedMemory)
 		return JudgeWrong, usedTime, usedMemory, nil
 	}
