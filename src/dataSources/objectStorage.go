@@ -31,8 +31,8 @@ func NewObjectStorage() (*ObjectStorage, error) {
 
 func (os *ObjectStorage) GetObject(objectName string) ([]byte, error) {
 	request := objectstorage.GetObjectRequest{
-		NamespaceName: common.String(GetEnv("OS_NAMESPACE")),
-		BucketName:    common.String(GetEnv("OS_BUCKET")),
+		NamespaceName: common.String(os.Getenv("OS_NAMESPACE")),
+		BucketName:    common.String(os.Getenv("OS_BUCKET")),
 		ObjectName:    common.String(objectName),
 	}
 
@@ -53,11 +53,11 @@ func (os *ObjectStorage) GetObject(objectName string) ([]byte, error) {
 
 func (os *ObjectStorage) PutObject(objectName string, data []byte) error {
 	request := objectstorage.PutObjectRequest{
-		NamespaceName: common.String(GetEnv("OS_NAMESPACE")),
-		BucketName:    common.String(GetEnv("OS_BUCKET")),
+		NamespaceName: common.String(os.Getenv("OS_NAMESPACE")),
+		BucketName:    common.String(os.Getenv("OS_BUCKET")),
 		ObjectName:    common.String(objectName),
 		PutObjectBody: io.NopCloser(bytes.NewReader(data)),
-		ContentType: common.String("text/plain"),
+		ContentType:   common.String("text/plain"),
 	}
 
 	_, err := os.Client.PutObject(context.Background(), request)
@@ -71,8 +71,8 @@ func (os *ObjectStorage) PutObject(objectName string, data []byte) error {
 
 func (os *ObjectStorage) ListObjects(folderPath string) ([]objectstorage.ObjectSummary, error) {
 	request := objectstorage.ListObjectsRequest{
-		NamespaceName: common.String(GetEnv("OS_NAMESPACE")),
-		BucketName:    common.String(GetEnv("OS_BUCKET")),
+		NamespaceName: common.String(os.Getenv("OS_NAMESPACE")),
+		BucketName:    common.String(os.Getenv("OS_BUCKET")),
 		Prefix:        common.String(folderPath),
 	}
 
