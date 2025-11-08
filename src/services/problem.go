@@ -331,8 +331,8 @@ func judgeSubmit(runCmd []string, submitId int, timeLimit, memoryLimit int) (Jud
 		usedMemories = append(usedMemories, usedMemory)
 	}
 
-	usedTime := Sum(usedTimes[1:]) / (int64(testCaseNum) - 1)
-	usedMemory := Sum(usedMemories) / int64(testCaseNum)
+	usedTime := Sum(usedTimes[1:]...) / (int64(testCaseNum) - 1)
+	usedMemory := Sum(usedMemories...) / int64(testCaseNum)
 
 	if !All(judgeResults...) {
 		printJudgeSubmitResult(false, usedTime, usedMemory)
