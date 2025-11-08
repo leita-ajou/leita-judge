@@ -76,16 +76,21 @@ const (
 	JudgeTimeOut
 )
 
+var judgeResultStrings = []string{
+	"UNKNOWN",
+	"CORRECT",
+	"WRONG",
+	"COMPILE_ERROR",
+	"RUNTIME_ERROR",
+	"MEMORY_OUT",
+	"TIME_OUT",
+}
+
 func (jr JudgeResultEnum) String() string {
-	return map[JudgeResultEnum]string{
-		JudgeUnknown:      "UNKNOWN",
-		JudgeCorrect:      "CORRECT",
-		JudgeWrong:        "WRONG",
-		JudgeCompileError: "COMPILE_ERROR",
-		JudgeRuntimeError: "RUNTIME_ERROR",
-		JudgeMemoryOut:    "MEMORY_OUT",
-		JudgeTimeOut:      "TIME_OUT",
-	}[jr]
+	if jr < 0 || int(jr) >= len(judgeResultStrings) {
+		return "UNKNOWN"
+	}
+	return judgeResultStrings[jr]
 }
 
 type GetProblemInfoDAO struct {

@@ -18,9 +18,9 @@ var Commands = map[string]Command{
 		DeleteCmd: []string{"rm", "{JUDGE_TYPE}/{SUBMIT_ID}/Main"},
 	},
 	"JAVA": {
-		BuildCmd:  []string{"javac", "-J-Xms1024m", "-J-Xmx1920m", "-J-Xss512m", "-encoding UTF-8", "-d", "bin", "{JUDGE_TYPE}/{SUBMIT_ID}/Main.java"},
+		BuildCmd:  []string{"javac", "-J-Xms1024m", "-J-Xmx1920m", "-J-Xss512m", "-encoding", "UTF-8", "-d", "bin", "{JUDGE_TYPE}/{SUBMIT_ID}/Main.java"},
 		RunCmd:    []string{"java", "-Xms1024m", "-Xmx1920m", "-Xss512m", "-Dfile.encoding=UTF-8", "-XX:+UseSerialGC", "-cp", "bin", "Main"},
-		DeleteCmd: []string{"rm", "{JUDGE_TYPE}/{SUBMIT_ID}/Main.class"},
+		DeleteCmd: []string{"rm", "-r", "{JUDGE_TYPE}/{SUBMIT_ID}/bin"},
 	},
 	"PYTHON": {
 		BuildCmd:  []string{},
