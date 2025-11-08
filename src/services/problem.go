@@ -155,10 +155,10 @@ func printRunProblemInfo(language string, submitId, problemId int, code []byte, 
 	for i, testCase := range testCases {
 		log.Info(i+1, "번째 테스트 케이스")
 
-		input := DecodeBase64([]byte(testCase.Input))
+		input := []byte(testCase.Input)
 		log.Info("입력:\n", string(input))
 
-		output := DecodeBase64([]byte(testCase.Output))
+		output := []byte(testCase.Output)
 		log.Info("출력:\n", string(output))
 	}
 }
@@ -167,26 +167,32 @@ func saveSubmitTestCases(service *ProblemService, submitId, problemId int) error
 	log.Info("--------------------------------")
 	log.Info("테스트 케이스 저장 중...")
 
-	if err := MakeDir(filepath.Join("submit", strconv.Itoa(submitId), "in")); err != nil {
+	inputPath := filepath.Join("submit", strconv.Itoa(submitId), "in")
+	if err := MakeDir(inputPath); err != nil {
 		log.Error(err)
 		return err
 	}
 
-	if err := MakeDir(filepath.Join("submit", strconv.Itoa(submitId), "out")); err != nil {
+	outputPath := filepath.Join("submit", strconv.Itoa(submitId), "out")
+	if err := MakeDir(outputPath); err != nil {
 		log.Error(err)
 		return err
 	}
 
-	//testCases, err := service.repository.GetObjectsInFolder(filepath.Join("testcases", strconv.Itoa(problemId)))
-	testCases, err := service.repository.GetTestcases(problemId)
+	testCasesPath := filepath.Join("problems", strconv.Itoa(problemId), "testcases")
+	testCases, err := service.repository.GetObjectsInFolder(testCasesPath)
 	if err != nil {
 		log.Error(err)
 		return err
 	}
 
 	testCaseNum := len(testCases) / 2
-	inputTestCases := testCases[:testCaseNum]
-	outputTestCases := testCases[testCaseNum:]
+	inputTestCases := make([][]byte, testCaseNum)
+	outputTestCases := make([][]byte, testCaseNum)
+	for i := 0; i < testCaseNum; i++ {
+		inputTestCases[i] = testCases[i*2]
+		outputTestCases[i] = testCases[i*2+1]
+	}
 
 	for i := 0; i < testCaseNum; i++ {
 		inputFilePath := filepath.Join("submit", strconv.Itoa(submitId), "in", strconv.Itoa(i)+".in")
@@ -210,25 +216,27 @@ func saveRunTestCases(submitId int, testCases []TestCase) error {
 	log.Info("--------------------------------")
 	log.Info("테스트 케이스 저장 중...")
 
-	if err := MakeDir(filepath.Join("run", strconv.Itoa(submitId), "in")); err != nil {
+	inputPath := filepath.Join("run", strconv.Itoa(submitId), "in")
+	if err := MakeDir(inputPath); err != nil {
 		log.Error(err)
 		return err
 	}
 
-	if err := MakeDir(filepath.Join("run", strconv.Itoa(submitId), "out")); err != nil {
+	outputPath := filepath.Join("run", strconv.Itoa(submitId), "out")
+	if err := MakeDir(outputPath); err != nil {
 		log.Error(err)
 		return err
 	}
 
 	for i, testCase := range testCases {
-		inputContents := DecodeBase64([]byte(testCase.Input))
+		inputContents := []byte(testCase.Input)
 		inputFilePath := filepath.Join("run", strconv.Itoa(submitId), "in", strconv.Itoa(i)+".in")
 		if err := os.WriteFile(inputFilePath, inputContents, 0644); err != nil {
 			log.Error(err)
 			return err
 		}
 
-		outputContents := DecodeBase64([]byte(testCase.Output))
+		outputContents := []byte(testCase.Output)
 		outputFilePath := filepath.Join("run", strconv.Itoa(submitId), "out", strconv.Itoa(i)+".out")
 		if err := os.WriteFile(outputFilePath, outputContents, 0644); err != nil {
 			log.Error(err)
@@ -243,11 +251,6 @@ func saveRunTestCases(submitId int, testCases []TestCase) error {
 func saveSourceCode(submitId int, code []byte, language, judgeType string) error {
 	log.Info("--------------------------------")
 	log.Info("소스 코드 저장 중...")
-
-	if err := MakeDir(filepath.Join(judgeType, strconv.Itoa(submitId))); err != nil {
-		log.Error(err)
-		return err
-	}
 
 	sourceFilePath := filepath.Join(judgeType, strconv.Itoa(submitId), "Main."+FileExtension(language))
 	if err := os.WriteFile(sourceFilePath, code, 0644); err != nil {
