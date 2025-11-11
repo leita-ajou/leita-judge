@@ -11,8 +11,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var envMap = make(map[string]string)
-
 func DecodeBase64(data []byte) []byte {
 	decodedData := make([]byte, base64.StdEncoding.DecodedLen(len(data)))
 	n, err := base64.StdEncoding.Decode(decodedData, data)
@@ -71,22 +69,7 @@ func LoadEnv() error {
 		return err
 	}
 
-	for _, env := range os.Environ() {
-		parts := strings.SplitN(env, "=", 2)
-		if len(parts) == 2 {
-			envMap[parts[0]] = parts[1]
-		}
-	}
-
 	return nil
-}
-
-func GetEnv(key string) string {
-	if value, exists := envMap[key]; exists {
-		return value
-	}
-
-	return ""
 }
 
 func MakeDir(path string) error {
@@ -103,25 +86,15 @@ func RandomInt(min, max int) int {
 }
 
 func ReplaceCommand(args []string, judgeType string, submitID int) []string {
+	replacer := strings.NewReplacer(
+		"{JUDGE_TYPE}", judgeType,
+		"{SUBMIT_ID}", strconv.Itoa(submitID),
+	)
 	replaced := make([]string, len(args))
 	for i, arg := range args {
-		arg = strings.ReplaceAll(arg, "{JUDGE_TYPE}", judgeType)
-		replaced[i] = strings.ReplaceAll(arg, "{SUBMIT_ID}", strconv.Itoa(submitID))
+		replaced[i] = replacer.Replace(arg)
 	}
 	return replaced
-}
-
-func TrimAllTrailingWhitespace(output []byte) []byte {
-	last := len(output)
-	for last > 0 {
-		switch output[last-1] {
-		case '\n', '\r', '\t', ' ':
-			last--
-		default:
-			return output[:last]
-		}
-	}
-	return output[:last]
 }
 
 func ErrStrIfNotNil(err error) string {

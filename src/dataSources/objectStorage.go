@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"os"
 
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/objectstorage"
-	. "leita/src/utils"
 )
 
 type ObjectStorage struct {
@@ -28,14 +28,14 @@ func NewObjectStorage() (*ObjectStorage, error) {
 	}, nil
 }
 
-func (os *ObjectStorage) GetObject(objectName string) ([]byte, error) {
+func (objStorage *ObjectStorage) GetObject(objectName string) ([]byte, error) {
 	request := objectstorage.GetObjectRequest{
-		NamespaceName: common.String(GetEnv("OS_NAMESPACE")),
-		BucketName:    common.String(GetEnv("OS_BUCKET")),
+		NamespaceName: common.String(os.Getenv("OS_NAMESPACE")),
+		BucketName:    common.String(os.Getenv("OS_BUCKET")),
 		ObjectName:    common.String(objectName),
 	}
 
-	response, err := os.Client.GetObject(context.Background(), request)
+	response, err := objStorage.Client.GetObject(context.Background(), request)
 	if err != nil {
 		log.Error(err)
 		return nil, err
@@ -50,16 +50,16 @@ func (os *ObjectStorage) GetObject(objectName string) ([]byte, error) {
 	return content, nil
 }
 
-func (os *ObjectStorage) PutObject(objectName string, data []byte) error {
+func (objStorage *ObjectStorage) PutObject(objectName string, data []byte) error {
 	request := objectstorage.PutObjectRequest{
-		NamespaceName: common.String(GetEnv("OS_NAMESPACE")),
-		BucketName:    common.String(GetEnv("OS_BUCKET")),
+		NamespaceName: common.String(os.Getenv("OS_NAMESPACE")),
+		BucketName:    common.String(os.Getenv("OS_BUCKET")),
 		ObjectName:    common.String(objectName),
 		PutObjectBody: io.NopCloser(bytes.NewReader(data)),
-		ContentType: common.String("text/plain"),
+		ContentType:   common.String("text/plain"),
 	}
 
-	_, err := os.Client.PutObject(context.Background(), request)
+	_, err := objStorage.Client.PutObject(context.Background(), request)
 	if err != nil {
 		log.Error(err)
 		return err
@@ -68,14 +68,14 @@ func (os *ObjectStorage) PutObject(objectName string, data []byte) error {
 	return nil
 }
 
-func (os *ObjectStorage) ListObjects(folderPath string) ([]objectstorage.ObjectSummary, error) {
+func (objStorage *ObjectStorage) ListObjects(folderPath string) ([]objectstorage.ObjectSummary, error) {
 	request := objectstorage.ListObjectsRequest{
-		NamespaceName: common.String(GetEnv("OS_NAMESPACE")),
-		BucketName:    common.String(GetEnv("OS_BUCKET")),
+		NamespaceName: common.String(os.Getenv("OS_NAMESPACE")),
+		BucketName:    common.String(os.Getenv("OS_BUCKET")),
 		Prefix:        common.String(folderPath),
 	}
 
-	response, err := os.Client.ListObjects(context.Background(), request)
+	response, err := objStorage.Client.ListObjects(context.Background(), request)
 	if err != nil {
 		log.Error(err)
 		return nil, err

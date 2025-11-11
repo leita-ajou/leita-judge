@@ -1,24 +1,18 @@
 package utils
 
-func All(s []bool) bool {
+import . "golang.org/x/exp/constraints"
+
+func All[T comparable](s ...T) bool {
+	var zero T
 	for _, v := range s {
-		if !v {
+		if v == zero {
 			return false
 		}
 	}
 	return true
 }
 
-func AllString(s ...string) bool {
-	for _, v := range s {
-		if v == "" {
-			return false
-		}
-	}
-	return true
-}
-
-func Sum[T ~int | ~int64](s []T) T {
+func Sum[T Integer | Float](s ...T) T {
 	var sum T
 	for _, v := range s {
 		sum += v

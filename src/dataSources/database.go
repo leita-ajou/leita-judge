@@ -3,11 +3,13 @@ package dataSources
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	"time"
+
+	. "leita/src/utils"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2/log"
-	. "leita/src/utils"
 )
 
 func getDSN() (string, error) {
@@ -18,14 +20,14 @@ func getDSN() (string, error) {
 		Port     string
 		Name     string
 	}{
-		User:     GetEnv("DB_USER"),
-		Password: GetEnv("DB_PASSWORD"),
-		Host:     GetEnv("DB_HOST"),
-		Port:     GetEnv("DB_PORT"),
-		Name:     GetEnv("DB_NAME"),
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		Name:     os.Getenv("DB_NAME"),
 	}
 
-	if !AllString(dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Name) {
+	if !All(dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Name) {
 		err := fmt.Errorf("invalid database configuration")
 		log.Error(err)
 		return "", err

@@ -1,10 +1,10 @@
 package repositories
 
 import (
-	"github.com/gofiber/fiber/v2/log"
 	"leita/src/dataSources"
 	. "leita/src/entities"
-	. "leita/src/utils"
+
+	"github.com/gofiber/fiber/v2/log"
 )
 
 type ProblemRepository struct {
@@ -64,42 +64,8 @@ func (repository *ProblemRepository) GetObjectsInFolder(folderPath string) ([][]
 			return nil, err
 		}
 
-		contents = append(contents, DecodeBase64(content))
+		contents = append(contents, content)
 	}
 
 	return contents, nil
-}
-
-// 테스트케이스 임시로 db에서 가져오기
-func (repository *ProblemRepository) GetTestcases(problemId int) ([][]byte, error) {
-	db := repository.dataSource.GetDatabase()
-
-	query := "SELECT input, output FROM problem_test_cases WHERE problem_id = ?;"
-	rows, err := db.Query(query, problemId)
-	if err != nil {
-		log.Error(err)
-		return nil, err
-	}
-	defer rows.Close()
-
-	testCases := make([][]byte, 0)
-	inputs := make([][]byte, 0)
-	outputs := make([][]byte, 0)
-	for rows.Next() {
-		var input, output []byte
-		if err = rows.Scan(&input, &output); err != nil {
-			log.Error(err)
-			return nil, err
-		}
-		inputs = append(inputs, DecodeBase64(input))
-		outputs = append(outputs, DecodeBase64(output))
-	}
-	if err = rows.Err(); err != nil {
-		log.Error(err)
-		return nil, err
-	}
-	testCases = append(testCases, inputs...)
-	testCases = append(testCases, outputs...)
-
-	return testCases, nil
 }
