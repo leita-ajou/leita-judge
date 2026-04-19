@@ -14,6 +14,7 @@ import (
 	. "leita/src/entities"
 	"leita/src/repositories"
 	. "leita/src/utils"
+	. "leita/src/commands"
 
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -59,7 +60,7 @@ func (service *ProblemService) SubmitProblem(dto SubmitProblemDTO) (JudgeResultE
 	}
 
 	defer func() {
-		path := filepath.Join("submits", strconv.Itoa(submitId), "Main."+FileExtension(language))
+		path := filepath.Join("submits", strconv.Itoa(submitId), FILE_NAME+"."+FileExtension(language))
 		if err = saveCode(service, path, code); err != nil {
 			log.Error(err)
 			return
@@ -252,7 +253,7 @@ func saveSourceCode(submitId int, code []byte, language, judgeType string) error
 	log.Info("--------------------------------")
 	log.Info("소스 코드 저장 중...")
 
-	sourceFilePath := filepath.Join(judgeType, strconv.Itoa(submitId), "Main."+FileExtension(language))
+	sourceFilePath := filepath.Join(judgeType, strconv.Itoa(submitId), FILE_NAME+"."+FileExtension(language))
 	if err := os.WriteFile(sourceFilePath, code, 0644); err != nil {
 		log.Error(err)
 		return err
