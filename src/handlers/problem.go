@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"math"
-	"strconv"
 
 	. "leita/src/commands"
 	. "leita/src/entities"
@@ -49,7 +48,7 @@ func (handler *ProblemHandler) SubmitProblem() fiber.Handler {
 			})
 		}
 
-		problemId, _ := strconv.Atoi(c.Params("problemId"))
+		problemId := c.Params("problemId")
 		submitId := req.SubmitId
 		language := req.Language
 		code := DecodeBase64([]byte(req.Code))
@@ -63,6 +62,7 @@ func (handler *ProblemHandler) SubmitProblem() fiber.Handler {
 			SubmitId:  submitId,
 			Language:  language,
 			Code:      code,
+			Limit:     req.Limit,
 			BuildCmd:  buildCmd,
 			RunCmd:    runCmd,
 			DeleteCmd: deleteCmd,
@@ -108,7 +108,7 @@ func (handler *ProblemHandler) RunProblem() fiber.Handler {
 			})
 		}
 
-		problemId, _ := strconv.Atoi(c.Params("problemId"))
+		problemId := c.Params("problemId")
 		language := req.Language
 		code := DecodeBase64([]byte(req.Code))
 		testCases := req.TestCases
@@ -123,6 +123,7 @@ func (handler *ProblemHandler) RunProblem() fiber.Handler {
 			SubmitId:  submitId,
 			Language:  language,
 			Code:      code,
+			Limit:     req.Limit,
 			TestCases: testCases,
 			BuildCmd:  buildCmd,
 			RunCmd:    runCmd,
