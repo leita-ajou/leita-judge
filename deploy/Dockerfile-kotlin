@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:1.24.10-alpine3.22 AS golang
+FROM docker.io/library/golang:1.26.2-alpine3.23 AS golang
 FROM docker.io/library/eclipse-temurin:21.0.6_7-jdk-alpine-3.21 AS jdk
 
 FROM golang AS build
