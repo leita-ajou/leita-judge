@@ -44,24 +44,19 @@ func (service *ProblemService) SubmitProblem(dto SubmitProblemDTO) (JudgeResultE
 	runCmd := dto.RunCmd
 	deleteCmd := dto.DeleteCmd
 
-	problemInfo, err := service.repository.GetProblemInfo(problemId)
-	if err != nil {
-		log.Error(err)
-		return JudgeUnknown, 0, 0, err
-	}
-	timeLimit := problemInfo.TimeLimit
-	memoryLimit := problemInfo.MemoryLimit
+	timeLimit := int(dto.Limit.Time)
+	memoryLimit := int(dto.Limit.Memory)
 
 	printSubmitProblemInfo(language, submitId, problemId, code, timeLimit, memoryLimit)
 
-	if err = saveSubmitTestCases(service, submitId, problemId); err != nil {
+	if err := saveSubmitTestCases(service, submitId, problemId); err != nil {
 		log.Error(err)
 		return JudgeUnknown, 0, 0, err
 	}
 
 	defer func() {
 		path := filepath.Join("submits", strconv.Itoa(submitId), FILE_NAME+"."+FileExtension(language))
-		if err = saveCode(service, path, code); err != nil {
+		if err := saveCode(service, path, code); err != nil {
 			log.Error(err)
 			return
 		}
@@ -99,17 +94,12 @@ func (service *ProblemService) RunProblem(dto RunProblemDTO) []RunProblemResult 
 	runCmd := dto.RunCmd
 	deleteCmd := dto.DeleteCmd
 
-	problemInfo, err := service.repository.GetProblemInfo(problemId)
-	if err != nil {
-		log.Error(err)
-		return []RunProblemResult{{Result: JudgeUnknown, Error: err}}
-	}
-	timeLimit := problemInfo.TimeLimit
-	memoryLimit := problemInfo.MemoryLimit
+	timeLimit := int(dto.Limit.Time)
+	memoryLimit := int(dto.Limit.Memory)
 
 	printRunProblemInfo(language, submitId, problemId, code, testCases, timeLimit, memoryLimit)
 
-	if err = saveRunTestCases(submitId, testCases); err != nil {
+	if err := saveRunTestCases(submitId, testCases); err != nil {
 		log.Error(err)
 		return []RunProblemResult{{Result: JudgeUnknown, Error: err}}
 	}
@@ -132,7 +122,7 @@ func (service *ProblemService) RunProblem(dto RunProblemDTO) []RunProblemResult 
 	return results
 }
 
-func printSubmitProblemInfo(language string, submitId, problemId int, code []byte, timeLimit, memoryLimit int) {
+func printSubmitProblemInfo(language string, submitId int, problemId string, code []byte, timeLimit, memoryLimit int) {
 	log.Info("--------------------------------")
 	log.Info("언어: ", language)
 	log.Info("제출 번호: ", submitId)
@@ -143,7 +133,7 @@ func printSubmitProblemInfo(language string, submitId, problemId int, code []byt
 	log.Info("제출 코드:\n", string(code))
 }
 
-func printRunProblemInfo(language string, submitId, problemId int, code []byte, testCases []TestCase, timeLimit, memoryLimit int) {
+func printRunProblemInfo(language string, submitId int, problemId string, code []byte, testCases []TestCase, timeLimit, memoryLimit int) {
 	log.Info("--------------------------------")
 	log.Info("언어: ", language)
 	log.Info("제출 번호: ", submitId)
@@ -164,7 +154,7 @@ func printRunProblemInfo(language string, submitId, problemId int, code []byte, 
 	}
 }
 
-func saveSubmitTestCases(service *ProblemService, submitId, problemId int) error {
+func saveSubmitTestCases(service *ProblemService, submitId int, problemId string) error {
 	log.Info("--------------------------------")
 	log.Info("테스트 케이스 저장 중...")
 
@@ -180,7 +170,7 @@ func saveSubmitTestCases(service *ProblemService, submitId, problemId int) error
 		return err
 	}
 
-	testCasesPath := filepath.Join("problems", strconv.Itoa(problemId), "testcases")
+	testCasesPath := filepath.Join("problems", problemId, "testcases")
 	testCases, err := service.repository.GetObjectsInFolder(testCasesPath)
 	if err != nil {
 		log.Error(err)
@@ -209,7 +199,7 @@ func saveSubmitTestCases(service *ProblemService, submitId, problemId int) error
 		}
 	}
 
-	log.Info("테스트 케이스 저장 완료!")
+	log.Info(testCaseNum, "개 테스트 케이스 저장 완료!")
 	return nil
 }
 
@@ -245,7 +235,7 @@ func saveRunTestCases(submitId int, testCases []TestCase) error {
 		}
 	}
 
-	log.Info("테스트 케이스 저장 완료!")
+	log.Info(len(testCases), "개 테스트 케이스 저장 완료!")
 	return nil
 }
 

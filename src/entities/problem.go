@@ -4,6 +4,7 @@ type SubmitProblemRequest struct {
 	SubmitId int    `json:"submitId"`
 	Language string `json:"language"`
 	Code     string `json:"code"`
+	Limit    Limit  `json:"limit"`
 }
 
 type SubmitProblemResponse struct {
@@ -14,10 +15,11 @@ type SubmitProblemResponse struct {
 }
 
 type SubmitProblemDTO struct {
-	ProblemId int
+	ProblemId string
 	SubmitId  int
 	Language  string
 	Code      []byte
+	Limit     Limit
 	BuildCmd  []string
 	RunCmd    []string
 	DeleteCmd []string
@@ -33,6 +35,7 @@ type SaveSubmitResultDTO struct {
 type RunProblemRequest struct {
 	Language  string     `json:"language"`
 	Code      string     `json:"code"`
+	Limit     Limit      `json:"limit"`
 	TestCases []TestCase `json:"testCases"`
 }
 
@@ -48,10 +51,11 @@ type TestCase struct {
 }
 
 type RunProblemDTO struct {
-	ProblemId int
+	ProblemId string
 	SubmitId  int
 	Language  string
 	Code      []byte
+	Limit     Limit
 	TestCases []TestCase
 	BuildCmd  []string
 	RunCmd    []string
@@ -93,7 +97,7 @@ func (jr JudgeResultEnum) String() string {
 	return judgeResultStrings[jr]
 }
 
-type GetProblemInfoDAO struct {
-	TimeLimit   int
-	MemoryLimit int
+type Limit struct {
+	Time   int `json:"time"`
+	Memory int `json:"memory"`
 }
