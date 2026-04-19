@@ -12,8 +12,6 @@
 
 # FROM swift AS run
 # WORKDIR /workspace
-# COPY .oci /root/.oci
-# COPY .env .
 # COPY --from=build /workspace/server .
 # COPY --from=build /workspace/docs ./docs
 # CMD ./server
