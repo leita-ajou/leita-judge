@@ -25,14 +25,15 @@ func NewObjectStorage() (*ObjectStorage, error) {
 		return nil, err
 	}
 
+	customTransport := http.DefaultTransport.(*http.Transport).Clone()
+	customTransport.MaxIdleConns = 100
+	customTransport.MaxIdleConnsPerHost = 100
+	customTransport.IdleConnTimeout = 90 * time.Second
+	customTransport.TLSHandshakeTimeout = 3 * time.Second
+
 	client.HTTPClient = &http.Client{
-		Timeout: time.Second * 5,
-		Transport: &http.Transport{
-			MaxIdleConns:        100,
-			MaxIdleConnsPerHost: 10,
-			IdleConnTimeout:     90 * time.Second,
-			TLSHandshakeTimeout: 3 * time.Second,
-		},
+		Timeout:   60 * time.Second,
+		Transport: customTransport,
 	}
 
 	retryPolicy := common.DefaultRetryPolicy()
