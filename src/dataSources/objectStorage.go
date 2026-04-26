@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/oracle/oci-go-sdk/v65/common"
@@ -22,6 +24,21 @@ func NewObjectStorage() (*ObjectStorage, error) {
 		log.Error(err)
 		return nil, err
 	}
+
+	client.HTTPClient = &http.Client{
+		Timeout: time.Second * 5,
+		Transport: &http.Transport{
+			MaxIdleConns:        100,
+			MaxIdleConnsPerHost: 10,
+			IdleConnTimeout:     90 * time.Second,
+			TLSHandshakeTimeout: 3 * time.Second,
+		},
+	}
+
+	retryPolicy := common.DefaultRetryPolicy()
+	client.SetCustomClientConfiguration(common.CustomClientConfiguration{
+		RetryPolicy: &retryPolicy,
+	})
 
 	return &ObjectStorage{
 		Client: client,
