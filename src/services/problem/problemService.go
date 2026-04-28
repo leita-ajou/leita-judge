@@ -1,4 +1,4 @@
-package services
+package problem
 
 import (
 	"bytes"
@@ -12,27 +12,20 @@ import (
 	"time"
 
 	. "leita/src/entities"
-	"leita/src/repositories"
+	"leita/src/repositories/problem"
 	. "leita/src/utils"
-	. "leita/src/commands"
 
 	"github.com/gofiber/fiber/v2/log"
 )
 
 type ProblemService struct {
-	repository *repositories.ProblemRepository
+	repository *problem.ProblemRepository
 }
 
-func NewProblemService() (*ProblemService, error) {
-	repository, err := repositories.NewProblemRepository()
-	if err != nil {
-		log.Error(err)
-		return nil, err
-	}
-
+func NewProblemService(repository *problem.ProblemRepository) *ProblemService {
 	return &ProblemService{
 		repository: repository,
-	}, nil
+	}
 }
 
 func (service *ProblemService) SubmitProblem(dto SubmitProblemDTO) (JudgeResultEnum, int64, int64, error) {
