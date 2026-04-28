@@ -101,3 +101,23 @@ func (objStorage *ObjectStorage) ListObjects(folderPath string) ([]objectstorage
 
 	return response.ListObjects.Objects, nil
 }
+
+func (objStorage *ObjectStorage) GetObjectsInFolder(folderPath string) ([][]byte, error) {
+	summaries, err := objStorage.ListObjects(folderPath)
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+
+	contents := make([][]byte, 0, len(summaries))
+	for _, summary := range summaries {
+		content, err := objStorage.GetObject(*summary.Name)
+		if err != nil {
+			log.Error(err)
+			return nil, err
+		}
+		contents = append(contents, content)
+	}
+
+	return contents, nil
+}
