@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	. "leita/src/routes"
+	"leita/src/routes"
 	. "leita/src/utils"
 
 	"github.com/gofiber/contrib/swagger"
@@ -34,7 +34,7 @@ func main() {
 		Path:     "/api/swagger",
 	}))
 
-	if err := RegisterRoutes(app); err != nil {
+	if err := routes.RegisterRoutes(app); err != nil {
 		log.Fatal(err)
 		return
 	}

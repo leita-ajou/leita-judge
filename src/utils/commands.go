@@ -1,4 +1,4 @@
-package commands
+package utils
 
 const FILE_NAME = "Main"
 
