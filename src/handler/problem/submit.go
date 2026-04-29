@@ -11,14 +11,17 @@ import (
 
 // SubmitProblem godoc
 //
-//	@Accept		json
-//	@Produce	json
-//	@Tags		Problem
-//	@Param		problemId	path		string					true	"problemId"
-//	@Param		requestBody	body		entity.SubmitProblemRequest	true	"requestBody"
-//	@Success	200			{object}	entity.SubmitProblemResponse
-//	@Failure	500			{object}	entity.SubmitProblemResponse
-//	@Router		/problem/submit/{problemId} [post]
+//	@Summary		Submit a problem solution
+//	@Description	Submit code for a specific problem to be judged.
+//	@Accept			json
+//	@Produce		json
+//	@Tags			Problem
+//	@Param			problemId	path		string						true	"Problem ID"
+//	@Param			requestBody	body		entity.SubmitProblemRequest	true	"Solution code and metadata"
+//	@Success		200			{object}	entity.SubmitProblemResponse
+//	@Failure		400			{object}	entity.SubmitProblemResponse
+//	@Failure		500			{object}	entity.SubmitProblemResponse
+//	@Router			/problem/submit/{problemId} [post]
 func (handler *Handler) SubmitProblem() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var req entity.SubmitProblemRequest

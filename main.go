@@ -15,8 +15,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// @title		Leita API Docs
-// @BasePath	/api
+// @title			Leita API Docs
+// @version		2.0.0
+// @description	Leita Judge System API Documentation
+// @BasePath		/api
 func main() {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Fatal(err)
