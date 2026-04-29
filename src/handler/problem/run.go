@@ -11,14 +11,17 @@ import (
 
 // RunProblem godoc
 //
-//	@Accept		json
-//	@Produce	json
-//	@Tags		Problem
-//	@Param		problemId	path		string				true	"problemId"
-//	@Param		requestBody	body		entity.RunProblemRequest	true	"requestBody"
-//	@Success	200			{object}	[]entity.RunProblemResponse
-//	@Failure	500			{object}	[]entity.RunProblemResponse
-//	@Router		/problem/run/{problemId} [post]
+//	@Summary		Run code with test cases
+//	@Description	Execute code against provided test cases for testing purposes.
+//	@Accept			json
+//	@Produce		json
+//	@Tags			Problem
+//	@Param			problemId	path		string					true	"Problem ID"
+//	@Param			requestBody	body		entity.RunProblemRequest	true	"Code and test cases"
+//	@Success		200			{object}	[]entity.RunProblemResponse
+//	@Failure		400			{object}	[]entity.RunProblemResponse
+//	@Failure		500			{object}	[]entity.RunProblemResponse
+//	@Router			/problem/run/{problemId} [post]
 func (handler *Handler) RunProblem() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var req entity.RunProblemRequest
