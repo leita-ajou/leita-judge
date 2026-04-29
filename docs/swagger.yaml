@@ -1,0 +1,143 @@
+basePath: /api
+definitions:
+  entity.Limit:
+    properties:
+      memory:
+        type: integer
+      time:
+        type: integer
+    type: object
+  entity.RunProblemRequest:
+    properties:
+      code:
+        type: string
+      language:
+        type: string
+      limit:
+        $ref: '#/definitions/entity.Limit'
+      testCases:
+        items:
+          $ref: '#/definitions/entity.TestCase'
+        type: array
+    type: object
+  entity.RunProblemResponse:
+    properties:
+      error:
+        type: string
+      output:
+        type: string
+      result:
+        type: string
+    type: object
+  entity.SubmitProblemRequest:
+    properties:
+      code:
+        type: string
+      language:
+        type: string
+      limit:
+        $ref: '#/definitions/entity.Limit'
+      submitId:
+        type: integer
+    type: object
+  entity.SubmitProblemResponse:
+    properties:
+      error:
+        type: string
+      result:
+        type: string
+      usedMemory:
+        type: integer
+      usedTime:
+        type: integer
+    type: object
+  entity.TestCase:
+    properties:
+      input:
+        type: string
+      output:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Leita Judge System API Documentation
+  title: Leita API Docs
+  version: 2.0.0
+paths:
+  /problem/run/{problemId}:
+    post:
+      consumes:
+      - application/json
+      description: Execute code against provided test cases for testing purposes.
+      parameters:
+      - description: Problem ID
+        in: path
+        name: problemId
+        required: true
+        type: string
+      - description: Code and test cases
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/entity.RunProblemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.RunProblemResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            items:
+              $ref: '#/definitions/entity.RunProblemResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            items:
+              $ref: '#/definitions/entity.RunProblemResponse'
+            type: array
+      summary: Run code with test cases
+      tags:
+      - Problem
+  /problem/submit/{problemId}:
+    post:
+      consumes:
+      - application/json
+      description: Submit code for a specific problem to be judged.
+      parameters:
+      - description: Problem ID
+        in: path
+        name: problemId
+        required: true
+        type: string
+      - description: Solution code and metadata
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SubmitProblemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SubmitProblemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.SubmitProblemResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.SubmitProblemResponse'
+      summary: Submit a problem solution
+      tags:
+      - Problem
+swagger: "2.0"

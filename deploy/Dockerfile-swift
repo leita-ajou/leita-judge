@@ -6,6 +6,7 @@
 
 # FROM golang AS build
 # WORKDIR /workspace
+<<<<<<< HEAD
 # COPY go.mod go.sum ./
 # RUN go mod download
 # COPY . .
@@ -31,10 +32,11 @@ FROM docker.io/library/swift:6.0.3 AS swift
 # FROM golang AS build
 # WORKDIR /workspace
 # RUN go install github.com/swaggo/swag/cmd/swag@v1.16.4
+=======
+>>>>>>> cb3552c (docs: enhance swagger documentation and optimize build process)
 # COPY go.mod go.sum ./
-# RUN go mod download -x
+# RUN go mod download
 # COPY . .
-# RUN swag init
 # RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o server .
 
 <<<<<<< HEAD
