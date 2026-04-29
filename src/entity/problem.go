@@ -1,4 +1,4 @@
-package entities
+package entity
 
 type SubmitProblemRequest struct {
 	SubmitId int    `json:"submitId"`
@@ -20,9 +20,6 @@ type SubmitProblemDTO struct {
 	Language  string
 	Code      []byte
 	Limit     Limit
-	BuildCmd  []string
-	RunCmd    []string
-	DeleteCmd []string
 }
 
 type SaveSubmitResultDTO struct {
@@ -52,14 +49,10 @@ type TestCase struct {
 
 type RunProblemDTO struct {
 	ProblemId string
-	SubmitId  int
 	Language  string
 	Code      []byte
 	Limit     Limit
 	TestCases []TestCase
-	BuildCmd  []string
-	RunCmd    []string
-	DeleteCmd []string
 }
 
 type RunProblemResult struct {

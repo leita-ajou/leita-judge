@@ -1,22 +1,22 @@
 package problem
 
 import (
-	"leita/src/dataSources"
+	"leita/src/datasource"
 
 	"github.com/gofiber/fiber/v2/log"
 )
 
-type ProblemRepository struct {
-	dataSource *dataSources.DataSource
+type Repository struct {
+	dataSource *datasource.DataSource
 }
 
-func NewProblemRepository(dataSource *dataSources.DataSource) *ProblemRepository {
-	return &ProblemRepository{
+func NewRepository(dataSource *datasource.DataSource) *Repository {
+	return &Repository{
 		dataSource: dataSource,
 	}
 }
 
-func (repository *ProblemRepository) SaveCode(path string, code []byte) error {
+func (repository *Repository) SaveCode(path string, code []byte) error {
 	os := repository.dataSource.GetObjectStorage()
 	if err := os.PutObject(path, code); err != nil {
 		log.Error(err)
@@ -26,7 +26,7 @@ func (repository *ProblemRepository) SaveCode(path string, code []byte) error {
 	return nil
 }
 
-func (repository *ProblemRepository) GetObjectsInFolder(path string) ([][]byte, error) {
+func (repository *Repository) GetObjectsInFolder(path string) ([][]byte, error) {
 	os := repository.dataSource.GetObjectStorage()
 	objects, err := os.GetObjectsInFolder(path)
 	if err != nil {
