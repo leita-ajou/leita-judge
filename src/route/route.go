@@ -4,8 +4,8 @@ import (
 	"leita/src/handler"
 	"leita/src/route/problem"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 func RegisterRoutes(app *fiber.App) error {

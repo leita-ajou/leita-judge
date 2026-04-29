@@ -3,7 +3,7 @@ package problem
 import (
 	"leita/src/datasource"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 type Repository struct {

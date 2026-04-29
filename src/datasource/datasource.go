@@ -1,7 +1,7 @@
 package datasource
 
 import (
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 type DataSource struct {
