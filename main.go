@@ -5,14 +5,15 @@ import (
 
 	"leita/src/route"
 
-	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/log"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/healthcheck"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/gofiber/fiber/v3/middleware/recover"
+	"github.com/gofiber/fiber/v3/middleware/static"
 	"github.com/joho/godotenv"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 // @title			Leita API Docs
@@ -30,11 +31,14 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 	app.Use(cors.New())
-	app.Use(healthcheck.New())
-	app.Use(swagger.New(swagger.Config{
-		FilePath: "./docs/swagger.json",
-		Path:     "/api/swagger",
-	}))
+
+	app.Get(healthcheck.LivenessEndpoint, healthcheck.New())
+	app.Get(healthcheck.ReadinessEndpoint, healthcheck.New())
+
+	app.Get("/swagger.json", static.New("./docs/swagger.json"))
+	app.Get("/api/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("/swagger.json"),
+	))
 
 	if err := route.RegisterRoutes(app); err != nil {
 		log.Fatal(err)
