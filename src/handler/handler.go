@@ -1,24 +1,24 @@
-package handlers
+package handler
 
 import (
-	"leita/src/handlers/problem"
-	"leita/src/services"
+	"leita/src/handler/problem"
+	"leita/src/service"
 
 	"github.com/gofiber/fiber/v2/log"
 )
 
 type Handler struct {
-	ProblemHandler *problem.ProblemHandler
+	ProblemHandler *problem.Handler
 }
 
 func NewHandler() (*Handler, error) {
-	service, err := services.NewService()
+	service, err := service.NewService()
 	if err != nil {
 		log.Error(err)
 		return nil, err
 	}
 
-	problemHandler := problem.NewProblemHandler(service.ProblemService)
+	problemHandler := problem.NewHandler(service.ProblemService)
 
 	return &Handler{
 		ProblemHandler: problemHandler,

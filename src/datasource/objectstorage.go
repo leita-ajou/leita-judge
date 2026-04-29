@@ -1,4 +1,4 @@
-package dataSources
+package datasource
 
 import (
 	"bytes"

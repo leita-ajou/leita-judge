@@ -3,8 +3,7 @@ package main
 import (
 	"os"
 
-	"leita/src/routes"
-	. "leita/src/utils"
+	"leita/src/route"
 
 	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v2"
@@ -13,12 +12,13 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/joho/godotenv"
 )
 
 // @title		Leita API Docs
 // @BasePath	/api
 func main() {
-	if err := initialize(); err != nil {
+	if err := godotenv.Load(".env"); err != nil {
 		log.Fatal(err)
 		return
 	}
@@ -34,19 +34,10 @@ func main() {
 		Path:     "/api/swagger",
 	}))
 
-	if err := routes.RegisterRoutes(app); err != nil {
+	if err := route.RegisterRoutes(app); err != nil {
 		log.Fatal(err)
 		return
 	}
 
 	log.Fatal(app.Listen(":" + os.Getenv("JUDGE_PORT")))
-}
-
-func initialize() error {
-	if err := LoadEnv(); err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	return nil
 }
