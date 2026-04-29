@@ -3,6 +3,6 @@ bin
 docs
 submit
 run
-database
+example
 .env
 .DS_Store
