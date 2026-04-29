@@ -4,7 +4,7 @@ import (
 	"leita/src/handler/problem"
 	"leita/src/service"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 type Handler struct {

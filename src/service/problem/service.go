@@ -14,7 +14,7 @@ import (
 	"leita/src/language"
 	filerepo "leita/src/repository/file"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 // storageRepository는 OCI 오브젝트 스토리지 접근을 추상화한다.

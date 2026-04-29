@@ -5,8 +5,8 @@ import (
 
 	"leita/src/entity"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 // SubmitProblem godoc
@@ -23,9 +23,9 @@ import (
 //	@Failure		500			{object}	entity.SubmitProblemResponse
 //	@Router			/problem/submit/{problemId} [post]
 func (handler *Handler) SubmitProblem() fiber.Handler {
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		var req entity.SubmitProblemRequest
-		if err := c.BodyParser(&req); err != nil {
+		if err := c.Bind().Body(&req); err != nil {
 			log.Error(err)
 			return c.Status(fiber.StatusBadRequest).JSON(entity.SubmitProblemResponse{
 				Error: err.Error(),
