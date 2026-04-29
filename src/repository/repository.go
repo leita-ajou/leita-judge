@@ -5,7 +5,7 @@ import (
 	filerepo "leita/src/repository/file"
 	"leita/src/repository/problem"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 type Repository struct {

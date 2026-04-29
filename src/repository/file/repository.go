@@ -8,7 +8,7 @@ import (
 	"leita/src/entity"
 	"leita/src/language"
 
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v3/log"
 )
 
 type Repository interface {
